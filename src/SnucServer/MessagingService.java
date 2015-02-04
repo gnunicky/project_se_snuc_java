@@ -33,7 +33,18 @@ import java.util.Map;
  * @author Russo Leandro, Invincibile Daniele e Didomenico Nicola
  */
 public class MessagingService implements IMessagingService, Runnable {
+    
+     /**
+     * Costruttore della classe MessagingService
+     *
+     * @param port porta in cui si pone in ascolto il server
+     * @throws IOException eccezione lanciata
+     */
+    public MessagingService(int port) throws IOException {
 
+
+    }
+    
     @Override
     public boolean commandHandler(Command cmd) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
