@@ -9,6 +9,14 @@ import java.io.IOException;
  */
 public class SnucServerMain {
 
-
+    public static void main(String[] arg) {
+        try {
+            MessagingService server = new MessagingService(7777);
+            new Thread(server).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Errore avvio server");
+        }
+    }
 
 }
