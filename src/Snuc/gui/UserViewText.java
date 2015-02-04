@@ -8,6 +8,8 @@ package Snuc.gui;
 
 import Common.IUser_Interaction;
 import Snuc.gui.Split;
+import Snuc.User;
+import Snuc.UserController;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
@@ -20,6 +22,13 @@ import java.util.Scanner;
  * @author nicky
  */
 public class UserViewText implements IUser_Interaction{
+    User usertext;
+    UserController controller;
+    
+    public UserViewText(UserController controller,User usertext) {
+        this.controller=controller;
+        this.usertext=usertext;
+    }
            
     public void clearnetbeans( ) {
         try {
@@ -86,7 +95,10 @@ public class UserViewText implements IUser_Interaction{
                    try {
                             System.out.println("Nickname:" +result[1]);
                             System.out.println("Address: "+result[2]);
-                            System.out.println("Port: "+Integer.parseInt(result[3]));                            
+                            System.out.println("Port: "+Integer.parseInt(result[3]));
+                            
+                            controller.connect(result[1],result[2],Integer.parseInt(result[3]));
+                            
                         } catch (Exception e ) {
                             System.err.print("This program takes 3 parameters: ");
                             System.err.println("Nickname, Address, Port ");
@@ -150,4 +162,3 @@ public class UserViewText implements IUser_Interaction{
 
     public void printPrivateMessage(String content, String sender){}
 }
-

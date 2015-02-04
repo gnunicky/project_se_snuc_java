@@ -13,11 +13,13 @@ public class SnucMain {
 
     public static void main(String[] args) {
         String modality = "textmode";
-
+        User user = new User();
+        UserController controller = new UserController();
+        controller.setUser(user);
         IUser_Interaction interface_;
         switch (modality) {
             case "textmode":
-                interface_ = new UserViewText();
+                interface_ = new UserViewText(controller, user);
                 ((UserViewText) interface_).start();
                 break;
             case "guimode":
