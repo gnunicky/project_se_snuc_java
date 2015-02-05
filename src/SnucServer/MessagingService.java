@@ -2,7 +2,9 @@ package SnucServer;
 
 import Common.Command;
 import Common.IMessagingService;
+import Common.Notify;
 import Common.TypeNotify;
+import Common.PublicNotify;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -88,6 +90,21 @@ public class MessagingService implements IMessagingService, Runnable {
 
         String confirmNick = examineNick(nickName);
 
+        UserConnectionHandler uch = new UserConnectionHandler(cs, this);
+        uch.setInputStream(ois);
+        uch.setOutputStream(oos);
+        new Thread(uch).start();
+        usersOnline.put(confirmNick, uch);
+
+        Notify reply
+                = new Notify(
+                        TypeNotify.CONNECTION_ACCEPT,
+                        welcomeText(confirmNick),
+                        getSeverDate(),
+                        confirmNick,
+                        null
+                );
+        uch.sendMessage(reply);
     }
 //-----------------------------------------------------------------------------------------------------------
 
@@ -121,6 +138,26 @@ public class MessagingService implements IMessagingService, Runnable {
     @Override
     public boolean commandHandler(Command cmd)
     {               
+        CommandParser cp = new CommandParser(cmd.getContent());
+        try{
+            switch (cp.getCommand()){                      
+                case "/listRooms":  listRoom(cmd.getSender()); break;
+                case "/join":
+                    if(cp.getParameter(1)==null){
+                        sendNotify(TypeNotify.BAD_COMMAND,"Missing parameter",cmd.getSender());
+                        return false;
+                    }
+                    join(cp.getParameter(1),cmd.getSender());
+                break;
+                default:
+                    sendNotify(TypeNotify.BAD_COMMAND,"Bad command!",cmd.getSender());
+                    return false;
+            }
+        }
+        catch(NullPointerException e){
+            sendNotify(TypeNotify.BAD_COMMAND,"Sintax Error!",cmd.getSender());
+            return false;
+        }
         return true;
     }
 
@@ -146,7 +183,9 @@ public class MessagingService implements IMessagingService, Runnable {
      * @param sender nickname dell'utente a cui verrà  spedita la notifica
      */
     private void sendNotify(TypeNotify type, String content, String sender) {
-
+        Notify notify
+                = new Notify(type, content, getSeverDate(), sender, null);
+        usersOnline.get(sender).sendMessage(notify);
     }
 
     /**
@@ -158,7 +197,12 @@ public class MessagingService implements IMessagingService, Runnable {
      * @param roomName nome della stanza relativa alla notifica pubblica
      */
     private void sendPublicNotify(TypeNotify type, String content, String sender, String roomName) {
-
+        PublicNotify publicNotify
+                = new PublicNotify(type, content, getSeverDate(), sender, null, roomName);
+        Room room = rooms.get(roomName);
+        for (String nick : room.getUsers()) {
+            usersOnline.get(nick).sendMessage(publicNotify);
+        }
     }
 
     /**

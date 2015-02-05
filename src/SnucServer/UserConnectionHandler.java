@@ -14,11 +14,90 @@ import java.net.Socket;
  */
 public class UserConnectionHandler implements Runnable {
 
-    @Override
-    public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    final private Socket cs;
+    final private MessagingService server;
+    private ObjectInputStream ois;
+    private ObjectOutputStream oos;
+
+    /**
+     * Costruttore della classe UserConnectionHandler
+     *
+     * @param cs socket
+     * @param server server
+     */
+    public UserConnectionHandler(Socket cs, MessagingService server) {
+        this.cs = cs;
+        this.server = server;
     }
 
-    
+    @Override
+    public void run() {
+        while (Thread.currentThread().isInterrupted() != true) {
+            Message msg = receiveMessage();
+            if (msg != null) {
+                dispatch(msg);
+            }
+        }
+    }
+
+    /**
+     * Il metodo si occupa della ricezione dei messaggi da parte del Server
+     *
+     * @return messaggio ricevuto
+     */
+    public Message receiveMessage() {
+        try {
+            return (Message) ois.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * In base al tipo di messaggio che viene passato come parametro, chiama
+     * l'oppurtuno metodo per la gestione di tale messaggio.
+     *
+     * @param msg messaggio che verrà  smistato nel metodo opportuno
+     * @return <code>true</code> se il messaggio è stato gestito correttamente
+     * <code>false</code> se il messaggio non è stato gestito correttamente
+     */
+    private boolean dispatch(Message msg) {
+        if (msg instanceof Command) {
+            return server.commandHandler((Command) msg);
+        }
+        return false;
+    }
+
+    /**
+     * Il metodo si occupa dell'invio dei messaggi da parte del Server
+     *
+     * @param m messaggio da inviare
+     */
+    public void sendMessage(Message m) {
+        try {
+            oos.writeObject(m);
+            oos.flush();
+        } catch (Exception e) {
+        }
+    }
+
+    /**
+     * Imposta lo stream di lettura
+     *
+     * @param ois stream di lettura associato associato alla socket
+     */
+    protected void setInputStream(ObjectInputStream ois) {
+        this.ois = ois;
+    }
+
+    /**
+     * Imposta lo stream di scrittura
+     *
+     * @param oos stream di scrittura associato alla socket
+     */
+    protected void setOutputStream(ObjectOutputStream oos) {
+        this.oos = oos;
+    }
 
 }
