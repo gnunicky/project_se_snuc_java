@@ -9,6 +9,8 @@ package Snuc.gui;
 import Common.IUser_Interaction;
 import Snuc.gui.Split;
 import Snuc.User;
+import Snuc.User;
+import Snuc.UserController;
 import Snuc.UserController;
 import java.awt.AWTException;
 import java.awt.Robot;
@@ -162,3 +164,4 @@ public class UserViewText implements IUser_Interaction{
 
     public void printPrivateMessage(String content, String sender){}
 }
+

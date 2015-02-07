@@ -23,7 +23,14 @@ public class SnucMain {
                 ((UserViewText) interface_).start();
                 break;
             case "guimode":
-
+                java.awt.EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        IUser_Interaction interface_;
+                        interface_ = new UserViewGUI(controller, user);
+                        ((UserViewGUI) interface_).setVisible(true);
+                        controller.setView(interface_);
+                    }
+                });
                 break;
             default:
                 System.out.println("Wrong of parameters!");
