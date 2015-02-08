@@ -248,35 +248,93 @@ public class UserViewGUI extends javax.swing.JFrame implements IUser_Interaction
     }//GEN-LAST:event_jMenuItemGuideActionPerformed
 
     private void jMenuItemListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListActionPerformed
-        
+        controller.executeCommand("/listRooms");
     }//GEN-LAST:event_jMenuItemListActionPerformed
     
     public void jButtonSendActionPerformed(){
+        String line=JPS.getjTextFieldMessage().getText();
+        if(line.charAt(0)=='/')
+            controller.executeCommand(line);
+        else{
+            String name="";
+            try{
+                name=JPS.getjTabbedPaneRoom().getSelectedComponent().getName();         
+            }
+            catch(Exception e){
+                JOptionPane.showMessageDialog(null,"Errore invio messaggio","Errore invio messaggio",JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        JPS.getjTextFieldMessage().setText("");
     }
     
     public void jListRoomsMouseClicked() {                                        
+
+        String nameRoom=(String)listRoomsModel.get(JPS.getjListRooms().getSelectedIndex());
+        if(user.getUserList(nameRoom)==null){
+            controller.executeCommand("/join '"+nameRoom+"'");
+        }
+        else
+            updateUsersToRoom(nameRoom,user.getUserList(nameRoom).toArray());
     }
     
     public void jListUsersMouseClicked() {                                        
+        try{
+            String receiver = (String) listUsersModel.get(JPS.getjListUsers().getSelectedIndex());
+            if(receiver.equals(user.getNick())) return;
+            addPanel(receiver);
+            selectPanel(receiver);
+            JPS.getjListUsers().removeAll();
+        }
+        catch(ArrayIndexOutOfBoundsException e){}
     }
-    
     public void jTabbedPaneRoomMouseClicked() {                                             
+
+       String  roomName=JPS.getjTabbedPaneRoom().getSelectedComponent().getName();
+       
+       listUsersModel.removeAllElements();
+       if((roomName!=null)&&(!roomName.equals("log"))){
+            Object[] users=user.getUserList(roomName).toArray();
+            for(int i=0;i<users.length;i++)
+                listUsersModel.addElement((String)users[i]);
+       }
+       JPS.getjListRooms().setModel(listRoomsModel);
     }  
     
     @Override
     public void updateRoomList(String list){
+        listRoomsModel.removeAllElements();
+        
+        String rooms[]=list.split("\n");
+        for(int i=0; i<rooms.length;i++)
+            listRoomsModel.addElement(rooms[i]);       
+        JPS.getjListRooms().setModel(listRoomsModel);
     }
     
     @Override
     public void updateUsersToRoom(String nameRoom, Object[] users){
+        //pulisco la lista degli utenti
+        listUsersModel.removeAllElements();
+                
+        addPanel(nameRoom);
+             
+        selectPanel(nameRoom);
+        
+        //Aggiorno la lista degli utenti 
+        for(int i=0; i<users.length;i++)
+            listUsersModel.addElement((String)users[i]);       
+        JPS.getjListUsers().setModel(listUsersModel);      
     }
     @Override
     public void printLogRoom(String log, String room){
+        try{
+            jtextAreaMap.get(room).append("\n"+log);
+         }
+         catch(NullPointerException e){e.printStackTrace();}
     }
 
     @Override
     public void printLog(String log){
-        
+        JPS.getjTextAreaLog().append("\n"+log);
     }
 
 
@@ -296,4 +354,27 @@ public class UserViewGUI extends javax.swing.JFrame implements IUser_Interaction
     private javax.swing.JMenu jMenuSiuc;
     // End of variables declaration//GEN-END:variables
 
+private boolean addPanel(String name){
+        //Verifico se il pannello della stanza già esiste
+        if(jtextAreaMap.get(name)==null){
+            JTextArea x=new JTextArea();
+            x.setName(name);
+            jtextAreaMap.put(name,x);          
+            JPS.getjTabbedPaneRoom().add(name,x);
+            return true;
+        }
+        return false;
+    }
+    
+    //Per selezionare il pannello --------------------------
+    private boolean selectPanel(String name) {
+        int len = JPS.getjTabbedPaneRoom().getComponents().length;
+        for (int i = 0; i < len; i++) {
+            if (JPS.getjTabbedPaneRoom().getTitleAt(i).equals(name)){
+                JPS.getjTabbedPaneRoom().setSelectedIndex(i);
+                return true;
+            }
+        }
+        return false;
+    }
 }
