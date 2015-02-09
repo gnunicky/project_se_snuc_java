@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Leandro
+ * @author Russo Leandro, Invincibile Daniele e Didomenico Nicola
  */
 public class UserTest {
     
