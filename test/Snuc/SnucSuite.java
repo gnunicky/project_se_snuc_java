@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SnucServer;
+package Snuc;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -17,8 +17,8 @@ import org.junit.runners.Suite;
  * @author Leandro
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({SnucServer.CommandParserTest.class, SnucServer.RoomTest.class, SnucServer.MessagingServiceTest.class})
-public class SnucServerSuite {
+@Suite.SuiteClasses({  Snuc.UserTest.class})
+public class SnucSuite {
 
     @BeforeClass
     public static void setUpClass() throws Exception {

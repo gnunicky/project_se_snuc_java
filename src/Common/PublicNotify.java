@@ -2,7 +2,6 @@ package Common;
 
 import java.util.GregorianCalendar;
 
-
 /**
  * La classe rappresenta le notifiche pubbliche che il Server invia agli utenti
  * per comunicare un determinato evento
@@ -11,7 +10,7 @@ import java.util.GregorianCalendar;
  */
 public class PublicNotify extends Notify {
 
-   private String room;
+    private String room;
 
     /**
      * Costruttore della classe PublicNotify

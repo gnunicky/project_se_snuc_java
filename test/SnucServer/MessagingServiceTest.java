@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Russo Leandro, Invincibile Daniele e Didomenico Nicola
+ * @author Leandro
  */
 public class MessagingServiceTest {
     
@@ -91,7 +91,7 @@ public class MessagingServiceTest {
     
     @Test
     public void testAddUser1() throws Exception{
-        System.out.println("addUser (nick giÃ  inserito)");
+        System.out.println("addUser (nick già inserito)");
         MessagingService instance = new MessagingService(0);
         String user = "Leandro";
         String roomName = "#Medical";

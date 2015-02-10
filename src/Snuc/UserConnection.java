@@ -95,7 +95,7 @@ public class UserConnection implements Runnable {
      * In base al tipo di messaggio che viene passato come parametro, chiama
      * l'oppurtuno metodo per la gestione di tale messaggio.
      *
-     * @param msg messaggio che verrà smistato nel metodo opportuno
+     * @param msg messaggio che verrà  smistato nel metodo opportuno
      */
     private void dispatch(Message msg) {
         if (msg instanceof PublicNotify) {

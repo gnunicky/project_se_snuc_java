@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Russo Leandro, Invincibile Daniele e Didomenico Nicola
+ * @author Leandro
  */
 public class RoomTest {
     

@@ -5,6 +5,7 @@
  */
 package Snuc;
 
+import Snuc.User;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -14,7 +15,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Russo Leandro, Invincibile Daniele e Didomenico Nicola
+ * @author Leandro
  */
 public class UserTest {
     

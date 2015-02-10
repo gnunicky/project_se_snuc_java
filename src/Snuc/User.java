@@ -11,7 +11,7 @@ import java.util.Map;
  * @author Russo Leandro, Invincibile Daniele e Didomenico Nicola
  */
 public class User {
-    
+
     private String nick;
     private Map<String, Collection<String>> roomsMap;
 
@@ -41,7 +41,7 @@ public class User {
     }
 
     /**
-     * Il metodo ritorna, in base al nome della stanza selezionata in cui Ã¨
+     * Il metodo ritorna, in base al nome della stanza selezionata in cui è
      * registrato l'utente, la lista aggiornata degli utenti registrati a tale
      * stanza
      *
@@ -66,6 +66,5 @@ public class User {
             c.add(list[i]);
         }
     }
-   
 
 }

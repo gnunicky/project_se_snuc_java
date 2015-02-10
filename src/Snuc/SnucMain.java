@@ -12,6 +12,7 @@ import Snuc.gui.UserViewText;
 public class SnucMain {
 
     public static void main(String[] args) {
+
         String modality = "guimode";
         User user = new User();
         UserController controller = new UserController();

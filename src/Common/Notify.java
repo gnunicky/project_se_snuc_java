@@ -2,7 +2,6 @@ package Common;
 
 import java.util.GregorianCalendar;
 
-
 /**
  * La classe rappresenta le notifiche che il Server invia all'utente per
  * comunicare un determinato evento
@@ -11,7 +10,6 @@ import java.util.GregorianCalendar;
  */
 public class Notify extends Message {
 
-    
     private TypeNotify notify;
 
     /**
@@ -52,5 +50,4 @@ public class Notify extends Message {
     public void setNotify(TypeNotify notify) {
         this.notify = notify;
     }
-
 }
