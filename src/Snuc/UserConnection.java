@@ -98,11 +98,7 @@ public class UserConnection implements Runnable {
      * @param msg messaggio che verrà  smistato nel metodo opportuno
      */
     private void dispatch(Message msg) {
-        if (msg instanceof PublicNotify) {
-            controller.receivePublicNotify((PublicNotify) msg);
-        } else if (msg instanceof Notify) {
-            controller.receiveNotify((Notify) msg);
-        }
+        
     }
 
     /**

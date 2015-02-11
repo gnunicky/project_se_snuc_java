@@ -77,46 +77,23 @@ public class UserController implements IUser {
 
 //--------------------------Metodi dell'interfaccia IUser -------------------------------------------------    
     @Override
-    public void receiveNotify(Notify notify) {
-        switch (notify.getNotify()) {
-            case UPDATE_LIST_ROOMS:
-                view.updateRoomList(notify.getContent());
-                break;
-            case BAD_COMMAND:
-                view.printLog(notify.getContent());
-                break;
-            case CONNECTION_ACCEPT:
-                user.setNick(notify.getSender());
-                view.printLog(notify.getContent());
-                break;
-        }
-    }
-
+    public void receiveNotify(
+            TypeNotify          type,
+            String              content,
+            GregorianCalendar   calendar,
+            String              sender
+    ){};
+    
     @Override
-    public void receivePublicNotify(PublicNotify notify) {
+    public  void receivePublicNotify(
+            TypeNotify          type,
+            String              content,
+            GregorianCalendar   calendar,
+            String              sender,
+            String              roomName
+    ) {};
 
-        String content = notify.getContent();
-        GregorianCalendar date = notify.getDate();
-        String sender = notify.getSender();
 
-        switch (notify.getNotify()) {
-            case UPDATE_LIST_USERS:
-                if (notify instanceof PublicNotify) {
-                    String roomName = ((PublicNotify) notify).getRoom();
-                    String users[] = content.split("\n");
-                    user.updateListRoom(roomName, users);
-                    view.updateUsersToRoom(roomName, users);
-                }
-                break;
-            case ADD_USER_TO_ROOM:
-                if (notify instanceof PublicNotify) {
-                    String roomName = ((PublicNotify) notify).getRoom();
-                    String log = PublicNotify.textFormat(TypeNotify.ADD_USER_TO_ROOM, content, date, sender, roomName);
-                    view.printLogRoom(log, roomName);
-                }
-                break;
-        }
-    }
 
 //---------------------------------------------------------------------------------------------------------    
     /**

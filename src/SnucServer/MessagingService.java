@@ -136,31 +136,11 @@ public class MessagingService implements IMessagingService, Runnable {
 
 
     @Override
-    public boolean commandHandler(Command cmd)
-    {               
-        CommandParser cp = new CommandParser(cmd.getContent());
-        try{
-            switch (cp.getCommand()){                      
-                case "/listRooms":  listRoom(cmd.getSender()); break;
-                case "/join":
-                    if(cp.getParameter(1)==null){
-                        sendNotify(TypeNotify.BAD_COMMAND,"Missing parameter",cmd.getSender());
-                        return false;
-                    }
-                    join(cp.getParameter(1),cmd.getSender());
-                break;
-                default:
-                    sendNotify(TypeNotify.BAD_COMMAND,"Bad command!",cmd.getSender());
-                    return false;
-            }
-        }
-        catch(NullPointerException e){
-            sendNotify(TypeNotify.BAD_COMMAND,"Sintax Error!",cmd.getSender());
-            return false;
-        }
-        return true;
-    }
-
+    public boolean commandHandler(
+            String cmd,
+            String sender
+    ){ return false; }
+   
     /**
      * Il metodo ritorna la lista delle stanze presenti nel server
      *

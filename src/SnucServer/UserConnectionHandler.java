@@ -63,9 +63,7 @@ public class UserConnectionHandler implements Runnable {
      * <code>false</code> se il messaggio non è stato gestito correttamente
      */
     private boolean dispatch(Message msg) {
-        if (msg instanceof Command) {
-            return server.commandHandler((Command) msg);
-        }
+
         return false;
     }
 
