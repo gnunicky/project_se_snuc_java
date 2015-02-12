@@ -18,6 +18,8 @@ import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * La classe implementa l'interfaccia IMessagingService e rappresenta il server
@@ -32,12 +34,12 @@ import java.util.Map;
  *
  * @author Russo Leandro, Invincibile Daniele e Didomenico Nicola
  */
-public class MessagingService implements IMessagingService, Runnable {
+public class MessagingService implements IMessagingService, Observer, Runnable {
 
     final int port;
     final private ServerSocket ss;
     final private Map<String, Room> rooms;
-    final private Map<String, UserConnectionHandler> usersOnline;
+    final private UserOnline usersOnLine;
 
     /**
      * Costruttore della classe MessagingService
@@ -46,14 +48,14 @@ public class MessagingService implements IMessagingService, Runnable {
      * @throws IOException eccezione lanciata
      */
     public MessagingService(int port) throws IOException {
-
         this.port = port;
         ss = new ServerSocket(port);
         rooms = new HashMap();
-        usersOnline = new HashMap();
+        usersOnLine = new UserOnline();
 
         //Caricamento stanze da file
         loadRoom("config/Room.txt");
+        attachObserver();
     }
 
 //----------------------------------Thread per istaurazione connessione -------------------------------------
@@ -94,7 +96,7 @@ public class MessagingService implements IMessagingService, Runnable {
         uch.setInputStream(ois);
         uch.setOutputStream(oos);
         new Thread(uch).start();
-        usersOnline.put(confirmNick, uch);
+        //usersOnLine.put(confirmNick, uch);
 
         Notify reply
                 = new Notify(
@@ -130,17 +132,18 @@ public class MessagingService implements IMessagingService, Runnable {
      * @return <code>true</code> se il nickname è già  utilizzato
      * <code>false</code> se il nickname è libero
      */
-    public boolean isAlreadyUsed(String nick) {
-        return usersOnline.containsKey(nick);
+    private boolean isAlreadyUsed(String nick) {
+        return usersOnLine.containsKey(nick);
     }
-
 
     @Override
     public boolean commandHandler(
             String cmd,
             String sender
-    ){ return false; }
-   
+    ) {
+        return false;
+    }
+
     /**
      * Il metodo ritorna la lista delle stanze presenti nel server
      *
@@ -163,9 +166,7 @@ public class MessagingService implements IMessagingService, Runnable {
      * @param sender nickname dell'utente a cui verrà  spedita la notifica
      */
     private void sendNotify(TypeNotify type, String content, String sender) {
-        Notify notify
-                = new Notify(type, content, getSeverDate(), sender, null);
-        usersOnline.get(sender).sendMessage(notify);
+        usersOnLine.get(sender).receiveNotify(type, content, getSeverDate(), sender);
     }
 
     /**
@@ -177,11 +178,9 @@ public class MessagingService implements IMessagingService, Runnable {
      * @param roomName nome della stanza relativa alla notifica pubblica
      */
     private void sendPublicNotify(TypeNotify type, String content, String sender, String roomName) {
-        PublicNotify publicNotify
-                = new PublicNotify(type, content, getSeverDate(), sender, null, roomName);
         Room room = rooms.get(roomName);
         for (String nick : room.getUsers()) {
-            usersOnline.get(nick).sendMessage(publicNotify);
+            usersOnLine.get(nick).receivePublicNotify(type, content, getSeverDate(), sender, roomName);
         }
     }
 
@@ -203,13 +202,12 @@ public class MessagingService implements IMessagingService, Runnable {
     }
 
     /**
-     * Il metodo ritorna la mappa contenente la lista degli utenti connessi al
-     * server
+     * Il metodo ritorna il riferimento all'oggetto UserOnline
      *
-     * @return mappa di utenti
+     * @return riferimento all'oggetto UserOnline
      */
-    Map getOnlineUsers() {
-        return usersOnline;
+    public UserOnline getOnlineUsers() {
+        return usersOnLine;
     }
 
     /**
@@ -260,13 +258,40 @@ public class MessagingService implements IMessagingService, Runnable {
             addUser(sender, roomName);
             sendPublicNotify(TypeNotify.UPDATE_LIST_USERS, room.getUsersToString(), sender, roomName);
             sendPublicNotify(TypeNotify.ADD_USER_TO_ROOM, null, sender, roomName);
+        } else {
+            sendNotify(TypeNotify.BAD_COMMAND, "Room not found!", sender);
         }
-        else
-            sendNotify(TypeNotify.BAD_COMMAND,"Room not found!",sender);
+    }
+
+    /**
+     * Il metodo effettua l'attach dell'osservatore riguardo UserOnline e Room
+     */
+    private void attachObserver() {
+        usersOnLine.addObserver(this);              //Attach osservatore utenti online        
+    }
+
+    /**
+     * Il metodo verrà  chiamato quando sarà  effettuata una modifica dello
+     * stato dell'oggetto osservato. Nel nostro caso il metodo verrà  chiamato
+     * se un nuovo utente si collegherà  al server o se un utente si registrerà 
+     * in una stanza
+     *
+     * @param o oggetto osservato
+     * @param arg argomento
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+
+        if (o instanceof UserOnline) {
+            String sender = (String) arg;
+            String serverMessage = welcomeText(sender);
+            sendNotify(TypeNotify.CONNECTION_ACCEPT, serverMessage, sender);
+        }
     }
     //--------------------------------------------------------------------------
-//*******************************Medodi ausialiari del server******************************************
 
+    //--------------------------------------------------------------------------
+//*******************************Medodi ausialiari del server******************************************
     /**
      * Il metodo ritorna all'utente il messaggio di benvenuto al servizio di
      * messaggistica
@@ -276,15 +301,13 @@ public class MessagingService implements IMessagingService, Runnable {
      */
     public static String welcomeText(String user) {
         String date = getSeverDate().getTime().toString();
-        return
-                "*********************************************************************************\n"+
-                "* Welcome to the Smart  Network  University  Communications         \t*\n"+
-                "* "+user +" - "+date+"\t\t\t*\n"+
-                "* This  server  was   created   Sat  February  7  2015  at  13:00:00\t*\n"+
-                "* GNU General Public Licens	(GPL)\t\t\t*\n"+
-                "* by   Russo Leandro  ,  Invincibile  Daniele ,  Didomenico  Nicola\t*\n"+
-                "*********************************************************************************"
-                ;
+        return "*********************************************************************************\n"
+                + "* Welcome to the Smart  Network  University  Communications         \t*\n"
+                + "* " + user + " - " + date + "\t\t\t*\n"
+                + "* This  server  was   created   Sat  February  7  2015  at  13:00:00\t*\n"
+                + "* GNU General Public Licens	(GPL)\t\t\t*\n"
+                + "* by   Russo Leandro  ,  Invincibile  Daniele ,  Didomenico  Nicola\t*\n"
+                + "*********************************************************************************";
     }
 
     /**

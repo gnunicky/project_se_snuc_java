@@ -49,7 +49,7 @@ public class MessagingServiceTest {
     
     @After
     public void tearDown() {
-        instance.getOnlineUsers().clear();
+        instance.getOnlineUsers().getOnlineUsers().clear();
     }
 
     /**
@@ -77,103 +77,5 @@ public class MessagingServiceTest {
     /**
      * Test of addUser method, of class MessagingService.
      */
-    @Test
-    public void testAddUser() throws Exception{
-        System.out.println("addUser");
-        MessagingService instance = new MessagingService(0);
-        String user = "Leandro";
-        String roomName = "#Medical";
-        
-        boolean expResult = true;
-        boolean result = instance.addUser(user, roomName);
-        assertEquals(expResult, result);
-    }
-    
-    @Test
-    public void testAddUser1() throws Exception{
-        System.out.println("addUser (nick già inserito)");
-        MessagingService instance = new MessagingService(0);
-        String user = "Leandro";
-        String roomName = "#Medical";
-        
-        boolean expResult = false;
-        instance.addUser(user, roomName);
-        boolean result = instance.addUser(user, roomName);
-        assertEquals(expResult, result);
-    }
-
-
-
-
-    /**
-     * Test of commandHandler method, of class MessagingService.
-     */
-    @Test
-    public void testCommandHandler(){
-        System.out.println("commandHandler");
-        Command cmd = new Command("/listRooms", null, "Leo",null);
-        boolean expResult=true;
-        boolean result=false;
-        instance.getOnlineUsers().put("Leo",new UserConnectionHandler(null,instance));
-        //result=instance.commandHandler(cmd);
-        assertEquals(expResult,result);
-         
-    }
-     /**
-     * Test of commandHandler1 method, of class MessagingService.
-     */
-    @Test
-    public void testCommandHandler1(){
-        System.out.println("commandHandler (comando non riconosciuto)");
-        Command cmd = new Command("/NotCommand", null,"Leo",null);
-        boolean expResult=false;
-        boolean result=false;
-        instance.getOnlineUsers().put("Leo",new UserConnectionHandler(null,instance));
-        //result=instance.commandHandler(cmd);
-        assertEquals(expResult,result);
-    }
-
-    /**
-     * Test of getRoomsName method, of class MessagingService.
-     */
-    @Test
-    public void testGetRoomsName() {
-        System.out.println("getRoomsName");
-        String expResult = "#Mathematics\n" +
-                            "#Pharmacy\n" +
-                            "#Medical\n" +
-                            "#ElettronicEngineering\n" +
-                            "#ComputerScience\n";
-        String result = instance.getRoomsName();
-        assertEquals(expResult, result);
-    }
-
-
-
-    /**
-     * Test of examineNick method, of class MessagingService.
-     */
-    @Test
-    public void testExamineNick() {
-        System.out.println("examineNick");
-        instance.getOnlineUsers().put("Nicola", null);
-        String proposeNick = "Nicola";
-        
-        String expResult = "_Nicola";
-        String result = instance.examineNick(proposeNick);
-        assertEquals(expResult, result);
-    }
-        /**
-     * Test of examineNick method, of class MessagingService.
-     */
-    @Test
-    public void testExamineNick1() {
-        System.out.println("examineNick1");
-        instance.getOnlineUsers().put("Nicola", null);
-        instance.getOnlineUsers().put("_Nicola", null);
-        String proposeNick = "Nicola";      
-        String expResult = "__Nicola";
-        String result = instance.examineNick(proposeNick);
-        assertEquals(expResult, result);
-    }
+   
 }
