@@ -267,7 +267,9 @@ public class MessagingService implements IMessagingService, Observer, Runnable {
      * Il metodo effettua l'attach dell'osservatore riguardo UserOnline e Room
      */
     private void attachObserver() {
-        usersOnLine.addObserver(this);              //Attach osservatore utenti online        
+        usersOnLine.addObserver(this);              //Attach osservatore utenti online    
+        for(Room room:rooms.values())               //Attach osservatore per le stanze
+            room.addObserver(this);
     }
 
     /**
@@ -281,11 +283,26 @@ public class MessagingService implements IMessagingService, Observer, Runnable {
      */
     @Override
     public void update(Observable o, Object arg) {
-
-        if (o instanceof UserOnline) {
-            String sender = (String) arg;
+        if (o instanceof Room) {
+            Room room=(Room)o;
+            String sender=(String)arg;
+            sendPublicNotify(
+                    TypeNotify.UPDATE_LIST_USERS,   //Tipo notifica
+                    room.getUsersToString(),        //Content: Lista di utenti come striga
+                    sender,                         //Sender
+                    room.getName()                  //Nome stanza
+            );
+            sendPublicNotify(
+                    TypeNotify.ADD_USER_TO_ROOM,
+                    null,
+                    sender,
+                    room.getName()
+            );
+        }
+        else if (o instanceof UserOnline) {
+            String sender=(String)arg;
             String serverMessage = welcomeText(sender);
-            sendNotify(TypeNotify.CONNECTION_ACCEPT, serverMessage, sender);
+            sendNotify(TypeNotify.CONNECTION_ACCEPT, serverMessage,sender);
         }
     }
     //--------------------------------------------------------------------------
