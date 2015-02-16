@@ -1,11 +1,14 @@
 package Connector;
 
 
-
+import Common.Command;
 import Common.IMessagingService;
 import Common.IUser;
 import Common.Message;
-
+import Common.Notify;
+import Common.PublicNotify;
+import Common.TypeNotify;
+import java.util.GregorianCalendar;
 
 
 /**
@@ -55,7 +58,23 @@ public abstract class Dispatcher implements Runnable{
      */
     public void dispatch(Message msg) {
                
-
+        String content = msg.getContent();
+        GregorianCalendar date = msg.getDate();
+        String sender = msg.getSender();
+        
+        
+        if (msg instanceof PublicNotify){
+            TypeNotify type = ((Notify) msg).getNotify();
+            String room=((PublicNotify)msg).getRoom();
+            user.receivePublicNotify(type, content, date, sender,room);
+        }
+        else if (msg instanceof Notify){
+            TypeNotify type = ((Notify) msg).getNotify();
+            user.receiveNotify(type, content, date, sender);
+        }
+        else if (msg instanceof Command) {
+            messagingService.commandHandler(content, sender);
+        }
     }
     
     

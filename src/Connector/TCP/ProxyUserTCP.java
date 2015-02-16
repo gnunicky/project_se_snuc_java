@@ -2,16 +2,31 @@ package Connector.TCP;
 
 
 import Common.Message;
+import Common.Notify;
+import Common.PublicNotify;
 import Common.TypeNotify;
 import Connector.ProxyUser;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.GregorianCalendar;
 
 
-
+/**
+ * Rappresenta localmente l'User che si trova in un host remoto.
+ * Ha la stessa interfaccia all'oggetto IUser e inoltre gestisce la comunicazione
+ * di rete in modo da far corrispondere la chiamata in locale dei suoi metodi con
+ * una chiamata in remoto dei metodi dell'utente.
+ * Utilizzando un tipo di comunicazione TCP ha bisogno un riferimento alla socket
+ * che permette la comunicazione con l'User corrispettivo in remoto. E' possibile
+ * inoltre impostare direttamente lo stream di rete senza considerare la socket
+ * a patto che lo stream sia stato ricavato sempre facendo riferimento alla socket.
+ * @author Russo Leandro,Invincibile Daniele,Didomenico Nicola
+ */
 public class ProxyUserTCP extends ProxyUser {
 
     
+    private Socket socket;
+    private ObjectOutputStream oos;
 
     
     /**
@@ -27,7 +42,8 @@ public class ProxyUserTCP extends ProxyUser {
             GregorianCalendar   calendar,
             String              sender)
     {
-
+        Notify notify=new Notify(type,content,calendar,sender,null);
+        send(notify);
     }
     
     
@@ -39,7 +55,8 @@ public class ProxyUserTCP extends ProxyUser {
             String              sender,
             String              roomName)
     {
-
+        PublicNotify notify=new PublicNotify(type,content,calendar,sender,null,roomName);
+        send(notify);
     }
     
     
@@ -49,7 +66,12 @@ public class ProxyUserTCP extends ProxyUser {
     
     @Override
     public void send(Message msg){
-
+        try{
+            oos.writeObject(msg);
+            oos.flush();
+        }
+        catch(Exception e){
+        }
     }
     
     
@@ -58,7 +80,7 @@ public class ProxyUserTCP extends ProxyUser {
      * @param objectOutputStream stream di scrittura associato associato alla socket
      */
     public void setOutputStream(Object objectOutputStream){
-
+        if(objectOutputStream instanceof ObjectOutputStream) oos=(ObjectOutputStream)objectOutputStream;
     }
     
     
@@ -73,7 +95,7 @@ public class ProxyUserTCP extends ProxyUser {
      */
     @Override
     public Socket getConnection(){
-        return null;
+        return socket;
     }
     
     
@@ -83,6 +105,6 @@ public class ProxyUserTCP extends ProxyUser {
      */
     @Override 
     public void setConnection(Object socket){
-
+        if(socket instanceof Socket) this.socket=(Socket)socket;
     }
 }

@@ -39,13 +39,19 @@ public class DispatcherTCP extends Dispatcher{
      */
     @Override
     public void run() {
-
+        try{
+            while (Thread.currentThread().isInterrupted() != true) {
+                    Message m=receive();
+                    dispatch(m);           
+            }
+        }
+        catch(Exception e){e.printStackTrace();}
     }
     
     
     @Override
     public Message receive() throws Exception{
-        return null;
+        return (Message) ois.readObject();        
     }
     
     
@@ -55,7 +61,7 @@ public class DispatcherTCP extends Dispatcher{
      */
     @Override
     public Socket getConnection(){
-        return null;
+        return socket;
     }
     
     
@@ -65,7 +71,7 @@ public class DispatcherTCP extends Dispatcher{
      */
     @Override 
     public void setConnection(Object socket){
-
+        if(socket instanceof Socket) this.socket=(Socket)socket;
     }
 
     
@@ -74,7 +80,9 @@ public class DispatcherTCP extends Dispatcher{
      * @param objectInputStream stream di lettura associato associato alla socket
      */
     public void setInputStream(Object objectInputStream) {
-
+        if (objectInputStream instanceof ObjectInputStream) {
+            ois = (ObjectInputStream) objectInputStream;
+        }
     }
 
     
