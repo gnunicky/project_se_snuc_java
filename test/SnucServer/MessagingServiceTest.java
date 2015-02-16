@@ -6,7 +6,6 @@
 package SnucServer;
 
 
-import SnucServer.UserConnectionHandler;
 import SnucServer.MessagingService;
 import Common.Command;
 import java.io.ObjectInputStream;
@@ -34,7 +33,7 @@ public class MessagingServiceTest {
     @BeforeClass
     public static void setUpClass() throws Exception{
         System.out.println("------ Test MessagingService ------");
-        instance = new MessagingService(0);
+//        instance = new MessagingService(0);
         //new Thread(instance).start();
     }
     

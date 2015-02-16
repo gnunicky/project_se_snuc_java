@@ -1,20 +1,13 @@
 package SnucServer;
 
-import Common.Command;
 import Common.IMessagingService;
-import Common.Notify;
+import Common.IUser;
 import Common.TypeNotify;
-import Common.PublicNotify;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,105 +16,111 @@ import java.util.Observer;
 
 /**
  * La classe implementa l'interfaccia IMessagingService e rappresenta il server
- * della nostro progetto. Provvederà alla instaurazione della connessione dei
- * client ponendosi in ascolto in una porta specifica. Si occupa inoltre della
- * gestione dei comandi che gli eventuali client invieranno al server e della
- * gestione delle notifiche che il server invierà  ai vari utenti per
- * notificarli di un particolare evento. In questa iterazione tale classe si
- * occupa anche del caricamento da file delle stanze presenti nel server, mentre
- * nelle iterazioni successive il compito di creare le stanze spetterà  ai vari
- * amministratori.
+ * della nostro progetto. Provvederà  alla gestione dei comandi che gli
+ * eventuali client invieranno al server e all'inoltro dei messaggi. Si
+ * occuperà  anche della gestione delle notifiche che il server invierà  ai vari
+ * utenti per notificarli di un particolare evento. In questa iterazione tale
+ * classe si occupa anche del caricamento da file delle stanze presenti nel
+ * server, mentre nelle iterazioni successive il compito di creare le stanze
+ * spetterà  ai vari amministratori.
  *
  * @author Russo Leandro, Invincibile Daniele e Didomenico Nicola
  */
-public class MessagingService implements IMessagingService, Observer, Runnable {
+public class MessagingService implements IMessagingService, Observer {
 
-    final int port;
-    final private ServerSocket ss;
     final private Map<String, Room> rooms;
     final private UserOnline usersOnLine;
 
     /**
      * Costruttore della classe MessagingService
      *
-     * @param port porta in cui si pone in ascolto il server
+     * @param fileRoomName nome del file in cui sono presenti le stanze da
+     * caricare nella lista delle stanze presenti nel server.
+     *
      * @throws IOException eccezione lanciata
      */
-    public MessagingService(int port) throws IOException {
-        this.port = port;
-        ss = new ServerSocket(port);
+    public MessagingService(String fileRoomName) throws IOException {
         rooms = new HashMap();
         usersOnLine = new UserOnline();
 
         //Caricamento stanze da file
-        loadRoom("config/Room.txt");
+        loadRoom(fileRoomName);
         attachObserver();
     }
 
-//----------------------------------Thread per istaurazione connessione -------------------------------------
+//-----------------Metodi dell'interfaccia IMessagingService ------------------------------------- 
     @Override
-    public void run() {
-        while (Thread.currentThread().isInterrupted() != true) {
-            try {
-                listeningConnection();
-            } catch (Exception e) {
-                System.out.println("Errore connessione!!");
+    public boolean commandHandler(
+            String cmd,
+            String sender) {
+        CommandParser cp = new CommandParser(cmd);
+        try {
+            switch (cp.getCommand()) {
+                case "/listRooms":
+                    listRoom(sender);
+                    break;
+                case "/join":
+                    if (cp.getParameter(1) == null) {
+                        sendNotify(TypeNotify.BAD_COMMAND, "Missing parameter", sender);
+                        return false;
+                    }
+                    join(cp.getParameter(1), sender);
+                    break;
+                default:
+                    sendNotify(TypeNotify.BAD_COMMAND, "Bad command!", sender);
+                    return false;
             }
+        } catch (NullPointerException e) {
+            sendNotify(TypeNotify.BAD_COMMAND, "Sintax Error!", sender);
+            return false;
+        }
+        return true;
+    }
+
+//-------------------------------------------------------------------------------------------------
+    /**
+     * Il metodo permette inviare all'user la notifica contenente la lista delle
+     * stanze presenti nel server
+     *
+     * @param sender nickname del mittente che ha richiesto la lista delle
+     * stanze presenti nel server
+     */
+    private void listRoom(String sender) {
+        sendNotify(TypeNotify.UPDATE_LIST_ROOMS, getRoomsName(), sender);
+    }
+
+    /**
+     * Il metodo aggiunge l'utente alla stanza
+     *
+     * @param roomName il nome della stanza in cui l'utente vuole registrarsi
+     * @param sender nickname del mittente che ha inviato il comando
+     */
+    private void join(String roomName, String sender) {
+        Room room = rooms.get(roomName);
+        if (room != null) //Controllo se esiste una stanza con nome inviato
+        {
+            addUser(sender, roomName);
+        } else {
+            sendNotify(TypeNotify.BAD_COMMAND, roomName + " not found!", sender);
         }
     }
+//-------------------------------------------------------------------------------------------------    
 
     /**
-     * Questo metodo si occupa di ascoltare le rischieste di connessioni degli
-     * User.
+     * Il metodo esamina il nickname dell'utente che vuole collegarsi al server
+     * al fine di controllare se esiste già  un utente collegato con lo stesso
+     * nickname. Nel caso in cui il nickname à già  utilizzato da un altro
+     * utente il metodo provvede all'aggiunta del carattere '_' all'inizio del
+     * nick fin quando il nickname risulta libero.
      *
-     * @throws Exception eccezione lanciata
+     * @param proposeNick nickname proposto
+     * @return nickname confermato
      */
-    private void listeningConnection() throws Exception {
-        System.out.println("Waiting connection...");
-        Socket cs = ss.accept();
-        System.out.println("Connected: " + cs);
-
-        //Creo gli stream di imput e di output********************************
-        ObjectInputStream ois = new ObjectInputStream(cs.getInputStream());
-        String nickName = (String) ois.readUTF();
-
-        ObjectOutputStream oos = new ObjectOutputStream(cs.getOutputStream());
-        String msg_server = "...Checking...";
-        oos.writeUTF(msg_server);
-        //********************************************************************
-
-        String confirmNick = examineNick(nickName);
-
-        UserConnectionHandler uch = new UserConnectionHandler(cs, this);
-        uch.setInputStream(ois);
-        uch.setOutputStream(oos);
-        new Thread(uch).start();
-        //usersOnLine.put(confirmNick, uch);
-
-        Notify reply
-                = new Notify(
-                        TypeNotify.CONNECTION_ACCEPT,
-                        welcomeText(confirmNick),
-                        getSeverDate(),
-                        confirmNick,
-                        null
-                );
-        uch.sendMessage(reply);
-    }
-//-----------------------------------------------------------------------------------------------------------
-
-    /**
-     * Il metodo permette l'inserimento dell'utente nella lista degli utenti
-     * registrati alla stanza
-     *
-     * @param user nickname dell'utente
-     * @param roomName nome della stanza
-     * @return <code>true</code> se l'utente è stato inserito correttamente
-     * <code>false</code> se l'utente è già registrato nella stanza
-     */
-    public boolean addUser(String user, String roomName) {
-        Room room = rooms.get(roomName);
-        return room.addUser(user);
+    public String examineNick(String proposeNick) {
+        while (isAlreadyUsed(proposeNick)) {
+            proposeNick = "_" + proposeNick;
+        }
+        return proposeNick;
     }
 
     /**
@@ -136,12 +135,27 @@ public class MessagingService implements IMessagingService, Observer, Runnable {
         return usersOnLine.containsKey(nick);
     }
 
-    @Override
-    public boolean commandHandler(
-            String cmd,
-            String sender
-    ) {
-        return false;
+    /**
+     * Il metodo ritorna il riferimento all'oggetto UserOnline
+     *
+     * @return riferimento all'oggetto UserOnline
+     */
+    public UserOnline getOnlineUsers() {
+        return usersOnLine;
+    }
+
+    /**
+     * Il metodo permette l'inserimento dell'utente nella lista degli utenti
+     * registrati alla stanza
+     *
+     * @param user nickname dell'utente
+     * @param roomName nome della stanza
+     * @return <code>true</code> se l'utente è stato inserito correttamente
+     * <code>false</code> se l'utente è già  registrato nella stanza
+     */
+    public boolean addUser(String user, String roomName) {
+        Room room = rooms.get(roomName);
+        return room.addUser(user);
     }
 
     /**
@@ -151,9 +165,8 @@ public class MessagingService implements IMessagingService, Observer, Runnable {
      */
     public String getRoomsName() {
         String list = "";
-        Collection<Room> c = rooms.values();
-        for (Room r : c) {
-            list = list.concat(r.getName() + "\n");
+        for (Room room : rooms.values()) {
+            list = list.concat(room.getName() + "\n");
         }
         return list;
     }
@@ -170,7 +183,7 @@ public class MessagingService implements IMessagingService, Observer, Runnable {
     }
 
     /**
-     * Il metodo permette l'invio della notifica pubblica agli utenti
+     * * Il metodo permette l'invio della notifica pubblica agli utenti
      *
      * @param type tipo di notifica
      * @param content contenuto della notifica
@@ -182,32 +195,6 @@ public class MessagingService implements IMessagingService, Observer, Runnable {
         for (String nick : room.getUsers()) {
             usersOnLine.get(nick).receivePublicNotify(type, content, getSeverDate(), sender, roomName);
         }
-    }
-
-    /**
-     * Il metodo esamina il nickname dell'utente che vuole collegarsi al server
-     * al fine di controllare se esiste già  un utente collegato con lo stesso
-     * nickname. Nel caso in cui il nickname è già  utilizzato da un altro
-     * utente il metodo provvede all'aggiunta del carattere '_' all'inizio del
-     * nick fin quando il nickname risulta libero.
-     *
-     * @param proposeNick nickname proposto
-     * @return nickname confermato
-     */
-    public String examineNick(String proposeNick) {
-        while (isAlreadyUsed(proposeNick)) {
-            proposeNick = "_" + proposeNick;
-        }
-        return proposeNick;
-    }
-
-    /**
-     * Il metodo ritorna il riferimento all'oggetto UserOnline
-     *
-     * @return riferimento all'oggetto UserOnline
-     */
-    public UserOnline getOnlineUsers() {
-        return usersOnLine;
     }
 
     /**
@@ -237,39 +224,14 @@ public class MessagingService implements IMessagingService, Observer, Runnable {
     }
 
     /**
-     * Permette inviare all'user la lista delle stanze presenti nel server
-     *
-     * @param sender mittente che ha inviato il messaggio
-     */
-    private void listRoom(String sender) {
-        sendNotify(TypeNotify.UPDATE_LIST_ROOMS, getRoomsName(), sender);
-    }
-
-    /**
-     * Aggiunge l'utente alla stanza e invia le notifiche rigurdanti i
-     * cambiamenti di stato agli utenti registrati nella stanza
-     *
-     * @param roomName il nome della stanza dove stavi collegado
-     * @param sender mittente che ha inviato il messaggio
-     */
-    private void join(String roomName, String sender) {
-        Room room = rooms.get(roomName);
-        if (room != null) {         //Controllo se esiste una stanza con nome inviato
-            addUser(sender, roomName);
-            sendPublicNotify(TypeNotify.UPDATE_LIST_USERS, room.getUsersToString(), sender, roomName);
-            sendPublicNotify(TypeNotify.ADD_USER_TO_ROOM, null, sender, roomName);
-        } else {
-            sendNotify(TypeNotify.BAD_COMMAND, "Room not found!", sender);
-        }
-    }
-
-    /**
      * Il metodo effettua l'attach dell'osservatore riguardo UserOnline e Room
      */
     private void attachObserver() {
-        usersOnLine.addObserver(this);              //Attach osservatore utenti online    
-        for(Room room:rooms.values())               //Attach osservatore per le stanze
+        usersOnLine.addObserver(this);              //Attach osservatore utenti online
+        for (Room room : rooms.values()) //Attach osservatore per le stanze
+        {
             room.addObserver(this);
+        }
     }
 
     /**
@@ -283,14 +245,15 @@ public class MessagingService implements IMessagingService, Observer, Runnable {
      */
     @Override
     public void update(Observable o, Object arg) {
+
         if (o instanceof Room) {
-            Room room=(Room)o;
-            String sender=(String)arg;
+            Room room = (Room) o;
+            String sender = (String) arg;
             sendPublicNotify(
-                    TypeNotify.UPDATE_LIST_USERS,   //Tipo notifica
-                    room.getUsersToString(),        //Content: Lista di utenti come striga
-                    sender,                         //Sender
-                    room.getName()                  //Nome stanza
+                    TypeNotify.UPDATE_LIST_USERS, //Tipo notifica
+                    room.getUsersToString(), //Content: Lista di utenti come striga
+                    sender, //Sender
+                    room.getName() //Nome stanza
             );
             sendPublicNotify(
                     TypeNotify.ADD_USER_TO_ROOM,
@@ -298,17 +261,15 @@ public class MessagingService implements IMessagingService, Observer, Runnable {
                     sender,
                     room.getName()
             );
-        }
-        else if (o instanceof UserOnline) {
-            String sender=(String)arg;
+        } else if (o instanceof UserOnline) {
+            String sender = (String) arg;
             String serverMessage = welcomeText(sender);
-            sendNotify(TypeNotify.CONNECTION_ACCEPT, serverMessage,sender);
+            sendNotify(TypeNotify.CONNECTION_ACCEPT, serverMessage, sender);
         }
     }
     //--------------------------------------------------------------------------
 
-    //--------------------------------------------------------------------------
-//*******************************Medodi ausialiari del server******************************************
+    //*******************************Medodi ausialiari del server******************************************
     /**
      * Il metodo ritorna all'utente il messaggio di benvenuto al servizio di
      * messaggistica
@@ -345,5 +306,4 @@ public class MessagingService implements IMessagingService, Observer, Runnable {
         return new GregorianCalendar(year, month, day, hour, min, sec);
     }
 //********************************************************************************************************
-
 }
