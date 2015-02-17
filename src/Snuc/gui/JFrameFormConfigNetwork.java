@@ -23,6 +23,14 @@ public class JFrameFormConfigNetwork extends javax.swing.JFrame {
     public JFrameFormConfigNetwork() {
         initComponents();
         this.setTitle("Config Network");
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("config/Config.txt"));
+            String value=br.readLine();
+            br.close();
+            jComboConnection.setSelectedItem(value);
+        } catch (IOException e) {
+            System.out.println("File di configurazione non trovato!!");
+        }
     }
 
     /**
@@ -152,7 +160,6 @@ public class JFrameFormConfigNetwork extends javax.swing.JFrame {
         getContentPane().add(jConnection, gridBagConstraints);
 
         jComboConnection.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "TCP", "UDP" }));
-        jComboConnection.setEnabled(false);
         jComboConnection.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboConnectionItemStateChanged(evt);
@@ -175,6 +182,13 @@ public class JFrameFormConfigNetwork extends javax.swing.JFrame {
     private void jComboConnectionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboConnectionItemStateChanged
         // TODO add your handling code here:
         String item=(String)jComboConnection.getSelectedItem();
+        try {
+            BufferedWriter br = new BufferedWriter(new FileWriter("config/Config.txt"));
+            br.write(item);
+            br.close();
+        } catch (IOException e) {
+            System.out.println("File di configurazione non trovato!!");
+        }
     }//GEN-LAST:event_jComboConnectionItemStateChanged
 
 

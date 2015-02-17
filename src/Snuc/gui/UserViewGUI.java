@@ -70,7 +70,7 @@ public class UserViewGUI extends javax.swing.JFrame implements IUser_Interaction
      
     
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("image/iconsnuc.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("image/iconsiuc.png")));
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -225,6 +225,9 @@ public class UserViewGUI extends javax.swing.JFrame implements IUser_Interaction
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Wrong port");
         }
+        catch (UnknownHostException  e) {
+            JOptionPane.showMessageDialog(null, "Wrong address");
+        }
         catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Connection failed!");
         }
@@ -234,9 +237,9 @@ public class UserViewGUI extends javax.swing.JFrame implements IUser_Interaction
 
     private void jMenuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAboutActionPerformed
         JOptionPane.showMessageDialog(null, "  Smart Network University Communications - GNU GPL  \n"
-                                          + "             Project Software Engineering A.A. 2014-15\n"
-                                          + "                  by Russo, Invincibile, Didomenico\n"
-                                          + "       Prof.Orazio Tomarchio - Università di Catania");
+                + "             Project Software Engineering A.A. 2014-15\n"
+                + "                  by Russo, Invincibile, Didomenico\n"
+                + "       Prof.Orazio Tomarchio - Università di Catania");
     }//GEN-LAST:event_jMenuItemAboutActionPerformed
 
     private void jMenuItemDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDocActionPerformed
