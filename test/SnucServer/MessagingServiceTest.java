@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Leandro
+ * @author Russo Leandro, Invincibile Daniele, Didomenico Nicola
  */
 public class MessagingServiceTest {
     
@@ -84,7 +84,7 @@ public class MessagingServiceTest {
     
     @Test
     public void testAddUser1() {
-        System.out.println("addUser (nick giÃ  inserito)");
+        System.out.println("addUser (nick già inserito)");
         String user = "Leandro";
         String roomName = "#Medical";
         instance.getOnlineUsers().put(user,new ProxyUserTCP());

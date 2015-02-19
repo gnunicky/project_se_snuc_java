@@ -39,5 +39,7 @@ public interface IUser_Interaction {
      * @param log log della connessione al server
      */
     public void printLog(String log);
-    
+
+
+
 }

@@ -15,10 +15,10 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Daniele
+ * @author Russo Leandro, Invincibile Daniele, Didomenico Nicola
  */
-public class CommandParserTest {       
-    
+public class CommandParserTest {
+     
     public CommandParserTest() {
     }
     
@@ -84,7 +84,7 @@ public class CommandParserTest {
         String result = instance.getCommand();
         assertNull(result);
     }
-         /**
+     /**
      * Test of testGetComman4 method, of class CommandParser.
      */
     @Test
@@ -139,6 +139,8 @@ public class CommandParserTest {
             String result = instance.getParameter(index);
             assertEquals(expResult, result);
         }
+    
+       
     
 
 }

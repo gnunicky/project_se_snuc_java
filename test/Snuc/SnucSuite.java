@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Snuc;
 
 import org.junit.After;
@@ -14,10 +9,10 @@ import org.junit.runners.Suite;
 
 /**
  *
- * @author Leandro
+ * @author Russo Leandro, Invincibile Daniele, Didomenico Nicola
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({  Snuc.UserTest.class})
+@Suite.SuiteClasses({Snuc.UserTest.class})
 public class SnucSuite {
 
     @BeforeClass

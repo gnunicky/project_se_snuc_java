@@ -5,7 +5,6 @@
  */
 package SnucServer;
 
-
 import SnucServer.Room;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -16,7 +15,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Leandro
+ * @author Russo Leandro, Invincibile Daniele, Didomenico Nicola
  */
 public class RoomTest {
     

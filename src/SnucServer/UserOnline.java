@@ -51,11 +51,11 @@ public class UserOnline extends Observable{
     }
     
     /**
-     * Il metodo verifica se nella lista degli utenti collegati al server è 
+     * Il metodo verifica sè nella lista degli utenti collegati al server è 
      * presente il nickname passato come argomento
      * 
      * @param nick nickname da verificare
-     * @return <code>true</code> se il nickname è già  presente             
+     * @return <code>true</code> se il nickname è già presente             
      *         <code>false</code> se il nickname non è presente             
      */   
     public synchronized boolean containsKey(String nick){

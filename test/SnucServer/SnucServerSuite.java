@@ -14,7 +14,7 @@ import org.junit.runners.Suite;
 
 /**
  *
- * @author Leandro
+ * @author Russo Leandro, Invincibile Daniele, Didomenico Nicola
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({SnucServer.CommandParserTest.class, SnucServer.RoomTest.class, SnucServer.MessagingServiceTest.class})
