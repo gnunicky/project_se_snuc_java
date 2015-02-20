@@ -10,7 +10,7 @@ import SnucServer.MessagingService;
  * User con il sistema MessagingService. Una volta connessi il sistema
  * interagisce con il servizio di messagistica e si occupera di inserire gli
  * User tra gli utenti Online.
- * @author Russo Leandro,Invincibile Daniele,Didomenico Nicola
+ * @author Russo Leandro, Invincibile Daniele, Didomenico Nicola
  */
 public abstract class ConnectionHandler implements Runnable{
     

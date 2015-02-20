@@ -17,7 +17,7 @@ import java.util.GregorianCalendar;
  * Questa classe può essere utilizzata sia lato client che lato server a patto
  * che venga settato il riferimento all'oggetto IUser o IMessagingService che 
  * rappresentano rispettivamente i client e il server.
- * @author Russo Leandro,Invincibile Daniele,Didomenico Nicola
+ * @author Russo Leandro, Invincibile Daniele, Didomenico Nicola
  */
 public abstract class Dispatcher implements Runnable{
 
