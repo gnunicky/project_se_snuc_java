@@ -1,4 +1,7 @@
 Common
+Connector
+Connector.TCP
+Connector.UDP
 Snuc
 Snuc.gui
 SnucServer
