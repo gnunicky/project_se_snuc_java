@@ -332,7 +332,16 @@ public class MessagingService implements IMessagingService,Observer {
 //********************************************************************************************************
 
     @Override
-    public void publicMessage(String msg, String sender, String roomName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void publicMessage(
+            String msg,
+            String sender,
+            String roomName)
+    {
+        //Per il momento supponiamo che la room esiste sicuro
+        for(String nameUser:rooms.get(roomName).getUsers()){
+            IUser user= usersOnLine.get(nameUser);
+            if(user!=null)
+                user.receivePublicMessage(roomName,msg,getSeverDate(),sender);
+        }
     }
 }
