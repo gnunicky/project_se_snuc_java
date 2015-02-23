@@ -148,4 +148,9 @@ public class ProxyMessagingServiceUDP extends ProxyMessagingService{
     @Override
     public DatagramSocket getConnection(){return cs;}
 
+    @Override
+    public void publicMessage(String msg, String sender, String roomName) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

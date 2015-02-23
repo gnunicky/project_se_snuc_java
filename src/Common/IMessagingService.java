@@ -28,6 +28,19 @@ package Common;
 public interface IMessagingService {
     
 
+     /**
+     * Il metetodo permette di inviare messaggi pubblici 
+     * 
+     * @param msg contenuto del messaggio pubblico
+     * @param sender nickname del mittente del messaggio
+     * @param roomName nome della stanza in cui Ã¨ stato spedito il messaggio
+     */
+    public void publicMessage(
+            String msg,
+            String sender,
+            String roomName
+    );
+    
     /**
      * Il metodo permette di gestire un comando in base al tipo di comando 
      * inviato

@@ -330,4 +330,9 @@ public class MessagingService implements IMessagingService,Observer {
         return new GregorianCalendar(year, month, day, hour, min, sec);
     }
 //********************************************************************************************************
+
+    @Override
+    public void publicMessage(String msg, String sender, String roomName) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
