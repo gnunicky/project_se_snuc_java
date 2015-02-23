@@ -58,7 +58,13 @@ public interface IUser_Interaction {
      * @param log log della connessione al server
      */
     public void printLog(String log);
-
-
+    
+   /**
+     * Il metodo stampa il messaggio pubblico
+     * 
+     * @param content contenuto del messaggio
+     * @param room nome della stanza in cui è stato inviato il messaggio
+     */
+    public void printPublicMessage(String content, String room);
 
 }
