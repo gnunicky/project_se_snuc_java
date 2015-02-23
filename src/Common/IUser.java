@@ -62,6 +62,20 @@ public interface IUser {
             String              roomName
     );
     
+    /**
+     * Il metodo permette la ricezione dei messaggi pubblici
+     * 
+     * @param room nome della stanza
+     * @param content contenuto del messaggio pubblico
+     * @param date data di invio del messaggio pubblico
+     * @param sender nickname del mittente
+     */
+    public abstract void receivePublicMessage(
+            String              room,
+            String              content,
+            GregorianCalendar   date,
+            String              sender
+    );
 
     
 
