@@ -126,4 +126,9 @@ public class ProxyUserTCP extends ProxyUser {
     public void setConnection(Object socket){
         if(socket instanceof Socket) this.socket=(Socket)socket;
     }
+
+    @Override
+    public void receivePublicMessage(String room, String content, GregorianCalendar date, String sender) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

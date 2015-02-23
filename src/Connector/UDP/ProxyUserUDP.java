@@ -117,4 +117,9 @@ public class ProxyUserUDP extends ProxyUser{
              cs = ((DatagramSocket) datagramSocket);
     }
 
+    @Override
+    public void receivePublicMessage(String room, String content, GregorianCalendar date, String sender) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
