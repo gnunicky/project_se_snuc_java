@@ -281,8 +281,8 @@ public class UserViewGUI extends javax.swing.JFrame implements IUser_Interaction
             String name="";
             try{
                 name=JPS.getjTabbedPaneRoom().getSelectedComponent().getName();
-                  // if(name.charAt(0)=='#')
-                  //  controller.sendPublicMessage(line,name);            
+                  if(name.charAt(0)=='#')
+                    controller.sendPublicMessage(line,name);            
             }
             catch(Exception e){
                 JOptionPane.showMessageDialog(null,"Errore invio messaggio","Errore invio messaggio",JOptionPane.ERROR_MESSAGE);
