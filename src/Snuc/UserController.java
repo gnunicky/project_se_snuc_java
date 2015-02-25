@@ -22,6 +22,7 @@ package Snuc;
 import Common.IMessagingService;
 import Common.IUser;
 import Common.IUser_Interaction;
+import Common.PublicMessage;
 import Common.PublicNotify;
 import Common.TypeNotify;
 import Connector.ConnectionFactory;
@@ -91,6 +92,15 @@ public class UserController implements IUser {
     }
     
 
+    /**
+     * Il metodo permette l'invio dei messaggi pubblici
+     * 
+     * @param msg contenuto del messaggio pubblico
+     * @param roomName nome della stanza in cui è stato inviato il messaggio
+    */
+    public void sendPublicMessage(String msg, String roomName) {
+        server.publicMessage(msg, user.getNick(), roomName);
+    }
     
     /**
      * Il metodo permette l'invio di un comando al server per richiedere un
@@ -154,8 +164,15 @@ public class UserController implements IUser {
     
     //----------------------------------------------------------------------------------
 
-    @Override
-    public void receivePublicMessage(String room, String content, GregorianCalendar date, String sender) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+   @Override
+    public  void receivePublicMessage(
+            String              room,
+            String              content,
+            GregorianCalendar   date,
+            String              sender)
+    {
+        String msg=PublicMessage.format(content,date,sender);
+        view.printPublicMessage(msg,room);
     }
+    
 }
