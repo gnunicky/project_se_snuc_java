@@ -21,6 +21,7 @@ package Connector.UDP;
 
 import Common.Message;
 import Common.Notify;
+import Common.PublicMessage;
 import Common.PublicNotify;
 import Common.TypeNotify;
 import Connector.ProxyUser;
@@ -92,6 +93,16 @@ public class ProxyUserUDP extends ProxyUser{
     }
     
     
+    @Override
+    public  void receivePublicMessage(
+            String              room,
+            String              content,
+            GregorianCalendar   date,
+            String              sender)
+    {
+        PublicMessage msg=new PublicMessage(room,content,date,sender,null);
+        send(msg);
+    }
     
     
     
@@ -115,11 +126,6 @@ public class ProxyUserUDP extends ProxyUser{
     public void setConnection(Object datagramSocket) {
         if (datagramSocket instanceof DatagramSocket)
              cs = ((DatagramSocket) datagramSocket);
-    }
-
-    @Override
-    public void receivePublicMessage(String room, String content, GregorianCalendar date, String sender) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
