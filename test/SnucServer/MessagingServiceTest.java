@@ -180,5 +180,5 @@ public class MessagingServiceTest {
         String result = instance.examineNick(proposeNick);
         assertEquals(expResult, result);
     }
-
+    
 }

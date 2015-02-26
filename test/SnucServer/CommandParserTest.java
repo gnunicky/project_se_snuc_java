@@ -144,17 +144,32 @@ public class CommandParserTest {
         assertEquals(expResult, result);
     }
     
-        @Test
-        public void testGetParameter3() {
-            System.out.println("getParameter3");
-            CommandParser instance=new CommandParser("/join #Medical");
-            int index = 1;        
-            String expResult = null;
-            String result = instance.getParameter(index);
-            assertEquals(expResult, result);
-        }
-    
-       
-    
+    @Test
+    public void testGetParameter3() {
+        System.out.println("getParameter3");
+        CommandParser instance = new CommandParser("/join #Medical");
+        int index = 1;
+        String expResult = null;
+        String result = instance.getParameter(index);
+        assertEquals(expResult, result);
+    }
+
+    /*
+     * Test of getParameter method for public message command with 2 parameters
+     */
+    @Test
+    public void testGetParameter4() {
+        System.out.println("getParameter4");
+        CommandParser instance = new CommandParser("/msg '#Medical' 'Example public message text'");
+        int index_1 = 1;
+        int index_2 = 2;
+        String expResult_1 = "#Medical";
+        String expResult_2 = "Example public message text";
+        String result_1 = instance.getParameter(index_1);
+        String result_2 = instance.getParameter(index_2);
+        assertEquals(expResult_1, result_1);
+        assertEquals(expResult_2, result_2);
+    }
+
 
 }
