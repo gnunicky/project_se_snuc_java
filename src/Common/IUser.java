@@ -78,5 +78,18 @@ public interface IUser {
     );
 
     
-
+    /**
+     * Il metodo permette la ricezione dei messaggi privati
+     * 
+     * @param receiver nickname del destinatario del messaggio privato
+     * @param content contenuto del messaggio privato
+     * @param date data di invio del messaggio privato
+     * @param sender nickname del mittente del messaggio privato
+     */
+    public abstract void receivePrivateMessage(
+            String              receiver,
+            String              content,
+            GregorianCalendar   date,
+            String              sender
+    );
 }
