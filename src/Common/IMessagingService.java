@@ -55,6 +55,17 @@ public interface IMessagingService {
             String sender
     );
     
-
+    /**
+     * Il metetodo permette di inviare messaggi privati
+     * 
+     * @param msg contenuto del messaggio privato
+     * @param sender nickname del mittente del messaggio    
+     * @param receiver nickname del destinatario del messaggio
+     */
+    public void privateMessage(
+            String msg,
+            String sender,
+            String receiver
+    );
 
 }

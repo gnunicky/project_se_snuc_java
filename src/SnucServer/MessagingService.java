@@ -344,4 +344,9 @@ public class MessagingService implements IMessagingService,Observer {
                 user.receivePublicMessage(roomName,msg,getSeverDate(),sender);
         }
     }
+
+    @Override
+    public void privateMessage(String msg, String sender, String receiver) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

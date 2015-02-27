@@ -164,4 +164,9 @@ public class ProxyMessagingServiceTCP extends ProxyMessagingService {
     public void setConnection(Object socket){
         if(socket instanceof Socket) this.socket=(Socket)socket;
     }
+
+    @Override
+    public void privateMessage(String msg, String sender, String receiver) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
