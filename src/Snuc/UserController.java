@@ -174,5 +174,10 @@ public class UserController implements IUser {
         String msg=PublicMessage.format(content,date,sender);
         view.printPublicMessage(msg,room);
     }
+
+    @Override
+    public void receivePrivateMessage(String receiver, String content, GregorianCalendar date, String sender) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

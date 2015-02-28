@@ -23,6 +23,7 @@ package Connector.TCP;
 import Common.Command;
 import Common.IUser;
 import Common.Message;
+import Common.Private;
 import Common.PublicMessage;
 import Connector.ConnectionFactory;
 import Connector.Dispatcher;
@@ -118,6 +119,15 @@ public class ProxyMessagingServiceTCP extends ProxyMessagingService {
     }
     
     
+    @Override
+    public void privateMessage(
+            String content,
+            String sender,
+            String receiver
+    ){
+        Private msg=new Private(receiver,content,null,sender,null);
+        send(msg);
+    }
     
     
     @Override

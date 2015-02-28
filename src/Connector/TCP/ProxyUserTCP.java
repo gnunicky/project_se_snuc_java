@@ -22,6 +22,7 @@ package Connector.TCP;
 
 import Common.Message;
 import Common.Notify;
+import Common.Private;
 import Common.PublicMessage;
 import Common.PublicNotify;
 import Common.TypeNotify;
@@ -92,6 +93,16 @@ public class ProxyUserTCP extends ProxyUser {
     }
     
     
+    @Override
+    public void receivePrivateMessage(
+            String receiver,
+            String content,
+            GregorianCalendar date,
+            String sender 
+    ){
+        Private msg=new Private(receiver,content,date,sender,null);
+        send(msg);
+    }
     
     
     @Override
