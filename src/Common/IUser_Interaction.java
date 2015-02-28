@@ -66,5 +66,13 @@ public interface IUser_Interaction {
      * @param room nome della stanza in cui è stato inviato il messaggio
      */
     public void printPublicMessage(String content, String room);
+    
+        /**
+     * Il metodo stampa il messaggio privato
+     * 
+     * @param content contenuto del messaggio
+     * @param sender nickname del mittente
+     */
+    public void printPrivateMessage(String content, String sender);
 
 }

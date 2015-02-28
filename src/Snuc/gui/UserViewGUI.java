@@ -284,7 +284,8 @@ public class UserViewGUI extends javax.swing.JFrame implements IUser_Interaction
             try{
                 name=JPS.getjTabbedPaneRoom().getSelectedComponent().getName();
                 if(name.charAt(0)=='#')
-                    controller.sendPublicMessage(line,name);            
+                    controller.sendPublicMessage(line,name);
+                
             }
             catch(Exception e){
                 JOptionPane.showMessageDialog(null,"Errore invio messaggio","Errore invio messaggio",JOptionPane.ERROR_MESSAGE);
@@ -368,6 +369,16 @@ public class UserViewGUI extends javax.swing.JFrame implements IUser_Interaction
             jtextAreaMap.get(room).append("\n"+content);
          }
          catch(NullPointerException e){e.printStackTrace();}
+    }
+    
+    @Override
+    public void printPrivateMessage(String content, String sender) {
+        try {
+            addPanel(sender);
+            jtextAreaMap.get(sender).append("\n" + content);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
