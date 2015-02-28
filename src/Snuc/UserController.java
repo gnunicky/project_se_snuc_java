@@ -113,7 +113,16 @@ public class UserController implements IUser {
     }
     
 
-
+    /**
+     * Il metodo permette l'invio dei messaggi privati
+     * 
+     * @param content contenuto del messaggio privato
+     * @param receiver nickname del destinatario del messaggio
+     */
+    public void sendPrivateMessage(String content,String receiver){
+        server.privateMessage(content,user.getNick(),receiver);
+    }
+    
 
     
  //----------------Medoti dell'interfaccia IUser -----------------------------------   
@@ -175,9 +184,17 @@ public class UserController implements IUser {
         view.printPublicMessage(msg,room);
     }
 
-    @Override
-    public void receivePrivateMessage(String receiver, String content, GregorianCalendar date, String sender) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+    @Override 
+    public  void receivePrivateMessage(
+            String              receiver,
+            String              content,
+            GregorianCalendar   date,
+            String              sender)
+    {
+        String msg=PublicMessage.format(content,date,sender);
+        if(sender.equals(user.getNick()))            
+            view.printPrivateMessage(msg,receiver);
+        else
+            view.printPrivateMessage(msg,sender);
+    } 
 }
