@@ -99,6 +99,16 @@ public class MessagingService implements IMessagingService,Observer {
         return true;
     }
 
+    
+    @Override
+    public void privateMessage(
+            String msg,
+            String sender,
+            String receiver
+    ){
+        usersOnLine.get(receiver).receivePrivateMessage(receiver, msg,getSeverDate(),sender);
+        usersOnLine.get(sender).receivePrivateMessage(receiver,msg,getSeverDate(),sender);
+    }
 //-------------------------------------------------------------------------------------------------
      
     
@@ -345,8 +355,4 @@ public class MessagingService implements IMessagingService,Observer {
         }
     }
 
-    @Override
-    public void privateMessage(String msg, String sender, String receiver) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
