@@ -145,6 +145,11 @@ public class JPanelDesktop extends javax.swing.JPanel {
 
         jScrollPane2.setPreferredSize(new java.awt.Dimension(43, 375));
 
+        jListUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jListUsersMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jListUsers);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -162,6 +167,10 @@ public class JPanelDesktop extends javax.swing.JPanel {
     private void jListRoomsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListRoomsMouseClicked
         gui.jListRoomsMouseClicked();
     }//GEN-LAST:event_jListRoomsMouseClicked
+
+    private void jListUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListUsersMouseClicked
+        gui.jListUsersMouseClicked();
+    }//GEN-LAST:event_jListUsersMouseClicked
 
     private void jTabbedPaneRoomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPaneRoomMouseClicked
         gui.jTabbedPaneRoomMouseClicked();

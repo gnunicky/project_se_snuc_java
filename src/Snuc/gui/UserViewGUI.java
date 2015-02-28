@@ -17,6 +17,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 package Snuc.gui;
 
 import Common.IUser_Interaction;
@@ -28,6 +29,7 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
@@ -256,9 +258,9 @@ public class UserViewGUI extends javax.swing.JFrame implements IUser_Interaction
 
     private void jMenuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAboutActionPerformed
         JOptionPane.showMessageDialog(null, "  Smart Network University Communications - GNU GPL  \n"
-                + "             Project Software Engineering A.A. 2014-15\n"
-                + "                  by Russo, Invincibile, Didomenico\n"
-                + "       Prof.Orazio Tomarchio - Università di Catania");
+                                          + "             Project Software Engineering A.A. 2014-15\n"
+                                          + "                  by Russo, Invincibile, Didomenico\n"
+                                          + "       Prof.Orazio Tomarchio - Università di Catania");
     }//GEN-LAST:event_jMenuItemAboutActionPerformed
 
     private void jMenuItemDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDocActionPerformed
@@ -281,7 +283,7 @@ public class UserViewGUI extends javax.swing.JFrame implements IUser_Interaction
             String name="";
             try{
                 name=JPS.getjTabbedPaneRoom().getSelectedComponent().getName();
-                  if(name.charAt(0)=='#')
+                if(name.charAt(0)=='#')
                     controller.sendPublicMessage(line,name);            
             }
             catch(Exception e){
