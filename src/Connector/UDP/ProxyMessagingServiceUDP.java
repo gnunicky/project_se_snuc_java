@@ -23,6 +23,7 @@ package Connector.UDP;
 import Common.Command;
 import Common.IUser;
 import Common.Message;
+import Common.Private;
 import Common.PublicMessage;
 import Connector.ConnectionFactory;
 import Connector.Dispatcher;
@@ -139,7 +140,15 @@ public class ProxyMessagingServiceUDP extends ProxyMessagingService{
     }
     
     
-
+    @Override
+    public void privateMessage(
+            String content,
+            String sender,
+            String receiver
+    ){
+        Private msg=new Private(receiver,content,null,sender,null);
+        send(msg);
+    }
 
     
      /**
@@ -158,10 +167,5 @@ public class ProxyMessagingServiceUDP extends ProxyMessagingService{
      */
     @Override
     public DatagramSocket getConnection(){return cs;}
-
-    @Override
-    public void privateMessage(String msg, String sender, String receiver) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
 }
