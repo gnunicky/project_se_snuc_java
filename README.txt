@@ -22,7 +22,7 @@
     oppure
    https://github.com/gnunicky/project_se_snuc_java/archive/iterazione_1.zip
 2. Sono presenti le seguenti cartelle:
-   - ../config: in tale cartella sono presenti 2 file testo: il Config.txt, contenente il tipo di comunicazione (TCP o UDP) e il
+   - ../config: in tale cartella sono presenti 2 file testo: il Config.txt, contenente il tipo di comunicazione (TCP) e il
                 il file Room.txt contenente la lista delle stanze presenti nel server;
    - ../doc: in tale cartella è presente la documentazione realizzata in javadocs 8 e una guida utente;
    - ../src: in tale cartella sono presenti i sorgenti dell'ultima iterazione dell'applicazione;
