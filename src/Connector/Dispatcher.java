@@ -24,7 +24,7 @@ import Common.IMessagingService;
 import Common.IUser;
 import Common.Message;
 import Common.Notify;
-import Common.Private;
+import Common.PrivateMessage;
 import Common.PublicMessage;
 import Common.PublicNotify;
 import Common.TypeNotify;
@@ -100,12 +100,12 @@ public abstract class Dispatcher implements Runnable{
             String room = ((PublicMessage) msg).getRoom();
             messagingService.publicMessage(content,sender,room);
         }
-        else if ((msg instanceof Private)&&(messagingService!=null)){
-            String receiver = ((Private) msg).getReceiver();
+        else if ((msg instanceof PrivateMessage)&&(messagingService!=null)){
+            String receiver = ((PrivateMessage) msg).getReceiver();
             messagingService.privateMessage(content,sender,receiver);
         }
-        else if ((msg instanceof Private)&&(user!=null)){
-            String receiver = ((Private) msg).getReceiver();
+        else if ((msg instanceof PrivateMessage)&&(user!=null)){
+            String receiver = ((PrivateMessage) msg).getReceiver();
             user.receivePrivateMessage(receiver,content,date,sender);
         }
         else if (msg instanceof Command) {

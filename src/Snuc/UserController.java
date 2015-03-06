@@ -156,7 +156,7 @@ public class UserController implements IUser {
         switch (type) {
             case UPDATE_LIST_USERS:
                 String users[] = content.split("\n");
-                user.updateListRoom(roomName, users);
+                user.setListUserToRoom(roomName, users);
                 view.updateUsersToRoom(roomName, users);
                 break;
             case ADD_USER_TO_ROOM:
