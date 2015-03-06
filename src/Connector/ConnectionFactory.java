@@ -31,6 +31,7 @@ import java.io.IOException;
  */
 public abstract class ConnectionFactory {
     
+    static private ConnectionFactory instance=null;    
     /**
      * Costruttore della ConnectionFactory
      */
@@ -48,12 +49,12 @@ public abstract class ConnectionFactory {
             BufferedReader br = new BufferedReader(new FileReader("config/Config.txt"));
             String line = br.readLine();
             if (line.equalsIgnoreCase("TCP")) {
-                return new ConnectionFactoryTCP();
+                return (instance==null)?new ConnectionFactoryTCP():instance;
             } else {
-                return new ConnectionFactoryUDP();
+                return (instance==null)?new ConnectionFactoryUDP():instance;
             }
         } catch (IOException e) {
-            System.out.println("File di configurazione non trovato!!");
+            System.out.println("Config File not found!");
             return null;
         }
     }

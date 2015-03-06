@@ -54,15 +54,15 @@ public class UserTest {
 
 
     /**
-     * Test of updateListRoom method, of class User.
+     * Test of setListUserToRoom method, of class User.
      */
     @Test
-    public void testUpdateListRoom() {
+    public void testSetListUserToRoom() {
         System.out.println("updateListRoom");
         String roomName = "#Medical";
         String[] list = {"Daniele","Leandro","Nicola"};
         User instance = new User();
-        instance.updateListRoom(roomName,list);
+        instance.setListUserToRoom(roomName,list);
         
         Object[] result =instance.getUserList(roomName).toArray();
         assertArrayEquals(result,list);

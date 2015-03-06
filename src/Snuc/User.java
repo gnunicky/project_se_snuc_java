@@ -78,7 +78,7 @@ public class User{
      * @param roomName nome della stanza
      * @param list lista degli utenti registrati nella stanza
      */
-    public void updateListRoom(String roomName, String[] list) {
+    public void setListUserToRoom(String roomName, String[] list) {
         roomsMap.put(roomName, new LinkedList());
         Collection c =roomsMap.get(roomName);
         for (int i = 0; i < list.length; i++)
