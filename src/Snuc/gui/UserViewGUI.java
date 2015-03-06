@@ -310,6 +310,7 @@ public class UserViewGUI extends javax.swing.JFrame implements IUser_Interaction
             if(receiver.equals(user.getNick())) return;
             addPanel(receiver);
             selectPanel(receiver);
+            listUsersModel.removeAllElements();
             JPS.getjListUsers().removeAll();
         }
         catch(ArrayIndexOutOfBoundsException e){}
