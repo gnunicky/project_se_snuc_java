@@ -17,10 +17,19 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-1. Come prima operazione bisogna scaricare il software con i relativi sorgenti utilizzando:
-   git clone https://github.com/gnunicky/project_se_snuc_java.git
-    oppure
-   https://github.com/gnunicky/project_se_snuc_java/archive/iterazione_1_refactored.zip
+1. Come prima operazione bisogna scaricare il software con i relativi sorgenti:
+   a) digitare da terminale:
+       wget https://github.com/gnunicky/project_se_snuc_java/blob/master/download_snuc_repository.sh 
+      digitare da terminale:
+	   chmod +x download_snuc_repository.sh
+	  avviare lo script, digitando da terminale:
+	   ./download_snuc_repository.sh
+   oppure
+   b) digitare da terminale:
+    git clone https://github.com/gnunicky/project_se_snuc_java.git
+   oppure
+   c) digitare da terminale: 
+    wget https://github.com/gnunicky/project_se_snuc_java/archive/iterazione_1_refactored.zip
 2. Sono presenti le seguenti cartelle:
    - ../config: in tale cartella sono presenti 2 file testo: il Config.txt, contenente il tipo di comunicazione (TCP o UDP) e il
                 il file Room.txt contenente la lista delle stanze presenti nel server;
@@ -49,6 +58,5 @@ REQUISITI DEL SERVER: per un corretto avvio del server è necessario inserire ne
 REQUISITI SOFTWARE:
 - Java Runtime Environment Version 8 e/o Java Platform (JDK) 8;
 - NetBeans IDE 8.0.2;
-- Google Chrome, Adobe Acrobat XI per Windows 7;
-- Mozilla Firefox, Applicazione default pdf per Debian-like/Ubuntu/Linux Mint.
+- Platforms: Windows, Mac, Linux
 
