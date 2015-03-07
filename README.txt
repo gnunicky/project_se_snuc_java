@@ -23,7 +23,7 @@
       digitare da terminale:
 	   chmod +x download_snuc_repository.sh
 	  avviare lo script, digitando da terminale:
-	   ./download_snuc_repository
+	   ./download_snuc_repository.sh
    oppure
    b) digitare da terminale:
     git clone https://github.com/gnunicky/project_se_snuc_java.git
