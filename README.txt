@@ -23,13 +23,13 @@
       digitare da terminale:
 	   chmod +x download_snuc_repository.sh
 	  avviare lo script, digitando da terminale:
-	   ./download_snuc_repository
+	   ./download_snuc_repository.sh
    oppure
    b) digitare da terminale:
     git clone https://github.com/gnunicky/project_se_snuc_java.git
    oppure
    c) digitare da terminale: 
-    wget  wget https://github.com/gnunicky/project_se_snuc_java/archive/iterazione_3.zip
+    wget https://github.com/gnunicky/project_se_snuc_java/archive/iterazione_3.zip
 2. Sono presenti le seguenti cartelle:
    - ../config: in tale cartella sono presenti 2 file testo: il Config.txt, contenente il tipo di comunicazione (TCP o UDP) e il
                 il file Room.txt contenente la lista delle stanze presenti nel server;
