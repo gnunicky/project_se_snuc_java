@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URI;
+import javax.swing.JOptionPane;
 
 /**
  * Tale classe manda in esecuzione la documentazione della Javadoc e una guida 
@@ -45,8 +46,9 @@ public class Execute {
                 str=str.substring(1);
                 System.out.println(str);
                 //String browser = "C:/Program Files/Internet Explorer/iexplore.exe ";
-                String browser = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe "; 
-                Runtime.getRuntime().exec(browser + str);
+                //String browser = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe "; 
+                //Runtime.getRuntime().exec(browser + str);
+                Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + str);
             } else if (os.contains("Linux")) {
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
                 File filea = new File("doc/javadoc/index.html");
@@ -75,7 +77,7 @@ public class Execute {
                 }
             } 
         } catch (final Exception e) {
-            //  Handle any exceptions.
+             JOptionPane.showMessageDialog(null, null, "Error Open File !", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -117,7 +119,7 @@ public class Execute {
                 }
             }
         } catch (final Exception e) {
-            //  Handle any exceptions.
+            JOptionPane.showMessageDialog(null, null, "Error Open File !", JOptionPane.ERROR_MESSAGE);
         }
     }
    
