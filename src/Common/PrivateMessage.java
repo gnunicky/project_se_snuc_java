@@ -26,7 +26,7 @@ import java.util.GregorianCalendar;
  * 
  * @author Russo Leandro, Invincibile Daniele e Didomenico Nicola
  */ 
-public class Private extends Message {
+public class PrivateMessage extends Message {
 
     private String receiver;
 
@@ -39,7 +39,7 @@ public class Private extends Message {
      * @param sender nickname del mittente del messaggio privato
      * @param type tipo di messaggio
      */
-    public Private(
+    public PrivateMessage(
             String receiver,
             String content,
             GregorianCalendar date,

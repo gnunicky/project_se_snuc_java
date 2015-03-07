@@ -21,7 +21,7 @@ package Connector.UDP;
 
 import Common.Message;
 import Common.Notify;
-import Common.Private;
+import Common.PrivateMessage;
 import Common.PublicMessage;
 import Common.PublicNotify;
 import Common.TypeNotify;
@@ -113,7 +113,7 @@ public class ProxyUserUDP extends ProxyUser{
             GregorianCalendar date,
             String sender 
     ){
-        Private msg=new Private(receiver,content,date,sender,null);
+        PrivateMessage msg=new PrivateMessage(receiver,content,date,sender,null);
         send(msg);
     }
     
