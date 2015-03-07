@@ -47,12 +47,12 @@ public class Execute {
                 //String browser = "C:/Program Files/Internet Explorer/iexplore.exe ";
                 String browser = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe "; 
                 Runtime.getRuntime().exec(browser + str);
-            } else {
+            } else if (os.contains("Linux")) {
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
                 File filea = new File("doc/javadoc/index.html");
                 URI fileUri = filea.toURI();
                 String str = fileUri.getPath();
-                String cmd = "/usr/bin/firefox " + str;
+                String cmd = "xdg-open " + str;
                 Process p = Runtime.getRuntime().exec(cmd);
                 BufferedReader pbr = new BufferedReader(new InputStreamReader(p.getInputStream()));
                 String line = pbr.readLine();
@@ -60,7 +60,20 @@ public class Execute {
                     System.out.println(line);
                     line = pbr.readLine();
                 }
-            }
+            } else if (os.contains("Mac OS X")) {
+                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+                File filea = new File("doc/javadoc/index.html");
+                URI fileUri = filea.toURI();
+                String str = fileUri.getPath();
+                String cmd = "open " + str;
+                Process p = Runtime.getRuntime().exec(cmd);
+                BufferedReader pbr = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                String line = pbr.readLine();
+                while (line != null) {
+                    System.out.println(line);
+                    line = pbr.readLine();
+                }
+            } 
         } catch (final Exception e) {
             //  Handle any exceptions.
         }
@@ -76,12 +89,25 @@ public class Execute {
                 str=str.substring(1);
                 Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + str);
                 
-            } else {
+            } else if (os.contains("Linux")) {
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
                 File filea = new File("doc/guide.pdf");
                 URI fileUri = filea.toURI();
                 String str = fileUri.getPath();
-                String cmd = "gnome-open " + str;
+                String cmd = "xdg-open " + str;
+                Process p = Runtime.getRuntime().exec(cmd);
+                BufferedReader pbr = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                String line = pbr.readLine();
+                while (line != null) {
+                    System.out.println(line);
+                    line = pbr.readLine();
+                }
+            } else if (os.contains("Mac OS X")) {
+                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+                File filea = new File("doc/guide.pdf");
+                URI fileUri = filea.toURI();
+                String str = fileUri.getPath();
+                String cmd = "open " + str;
                 Process p = Runtime.getRuntime().exec(cmd);
                 BufferedReader pbr = new BufferedReader(new InputStreamReader(p.getInputStream()));
                 String line = pbr.readLine();
