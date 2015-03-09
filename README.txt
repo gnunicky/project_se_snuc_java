@@ -31,10 +31,9 @@
    c) digitare da terminale: 
     wget https://github.com/gnunicky/project_se_snuc_java/archive/iterazione_1.zip
 2. Sono presenti le seguenti cartelle:
-   - ../config: in tale cartella sono presenti 2 file testo: il Config.txt, contenente il tipo di comunicazione (TCP) e il
-                il file Room.txt contenente la lista delle stanze presenti nel server;
+   - ../config: in tale cartella è presente file testo: il file Room.txt contenente la lista delle stanze presenti nel server;
    - ../doc: in tale cartella è presente la documentazione realizzata in javadocs 8 e una guida utente;
-   - ../src: in tale cartella sono presenti i sorgenti dell'ultima iterazione dell'applicazione;
+   - ../src: in tale cartella sono presenti i sorgenti dell'iterazione corrente;
    - ../test: in tale cartella sono presenti i test realizzati in junit 4;
 3. Per chi visualizza il codice sorgente, bisogna avere installato Netbeans (IDE), clonando o importando i vari repository
    delle varie iterazioni. Per avviare il server basta lanciare il file SnucServerMain.java presente nel package SnucServer, invece 
@@ -42,18 +41,13 @@
    un package docs in cui è presente la javadocs e una guida utente.
 
 N.B.
-REQUISITI DEL CLIENT: per un corretto avvio del client deve essere presente un file testo Config.txt nella cartella ../config. Nel file è presente
-                      la comunicazione utilizzata che è di tipo TCP. Naturalmente il server dovrà comunicare con lo stesso tipo di protocollo del
-                      client.
 
-REQUISITI DEL SERVER: per un corretto avvio del server è necessario inserire nella cartella /config dei file di testo chiamati Room.txt e Config.txt.
+REQUISITI DEL SERVER: per un corretto avvio del server è necessario inserire nella cartella /config il file di testo chiamato Room.txt.
 - Nel primo file saranno presenti la lista delle stanze caricate dall'amministratore del sistema. Secondo la medesima sintassi:
   #Room1
   #Room2
   [...]
   #RoomN 
-- Nel secondo file è presente il tipo di comunicazione utilizzata. Come prima riga del file occorre inserire: TCP. Naturalmente il client dovrà
-  comunicare con lo stesso tipo di protocollo del server. 
  
 REQUISITI SOFTWARE:
 - Java Runtime Environment Version 8 e/o Java Platform (JDK) 8;
