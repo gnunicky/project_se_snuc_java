@@ -34,7 +34,7 @@
    - ../config: in tale cartella sono presenti 2 file testo: il Config.txt, contenente il tipo di comunicazione (TCP o UDP) e il
                 il file Room.txt contenente la lista delle stanze presenti nel server;
    - ../doc: in tale cartella è presente la documentazione realizzata in javadocs 8 e una guida utente;
-   - ../src: in tale cartella sono presenti i sorgenti dell'ultima iterazione dell'applicazione;
+   - ../src: in tale cartella sono presenti i sorgenti dell'iterazione corrente;
    - ../test: in tale cartella sono presenti i test realizzati in junit 4;
 3. Per chi visualizza il codice sorgente, bisogna avere installato Netbeans (IDE), clonando o importando i vari repository
    delle varie iterazioni. Per avviare il server basta lanciare il file SnucServerMain.java presente nel package SnucServer, invece 
